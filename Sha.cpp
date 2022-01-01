@@ -39,7 +39,6 @@ void SHA::init(){
 }
 
 void SHA::update(const uint8* message, uint32 len_in){
-	std::cout << "\n\n";
 	uint32 block_number;
 	uint32 new_len, rem_len, tmp_len;
 	tmp_len = SHA_BLOCK_SIZE - len;
@@ -48,7 +47,7 @@ void SHA::update(const uint8* message, uint32 len_in){
 
 	for (size_t i = len; i < len_in; ++i) {
 		std::bitset<8> symbol(block[i]);
-		//std::cout << symbol;
+		//\std::cout << symbol;
 	}
 	//std::cout << "\n\n";
 
@@ -85,7 +84,6 @@ void SHA::final(){
 
 void SHA::transform(const unsigned char *message, unsigned int block_nb)
 {
-	init();
 	uint32 w[64];//includes garbage
 	uint32 wv[8];
 	uint32 t1, t2;
@@ -98,16 +96,16 @@ void SHA::transform(const unsigned char *message, unsigned int block_nb)
 		for (j = 0; j < 16; j++) {
 			sha_pack32(&sub_block[j << 2], &w[j]);
 		}
-
-		for (size_t wn = 0; wn < 64; ++wn) {
-			std::bitset<32> symbol(w[wn]);
-			//std::cout << symbol << "\n";
-		}
 		
 		//process garbage
 		for (j = 16; j < 64; j++) {
 			w[j] =  sha_f4(w[j -  2]) + w[j -  7] + sha_f3(w[j - 15]) + w[j - 16];
 		}
+
+		//for (size_t wn = 0; wn < 64; ++wn) {
+		//	std::bitset<32> symbol(w[wn]);
+		//	std::cout << symbol << "\n";
+		//}
 
 		//here message schedule aka garbage is prepatred
 			
@@ -140,6 +138,6 @@ std::string SHA::print_result(){
 	buf[2*SHA::RESULT_SIZE] = 0;
 	for (int i = 0; i < SHA::RESULT_SIZE; i++)
 		sprintf(buf+i*2, "%02x", result[i]);
-	std::cout << "\n\n" <<  std::string(buf);
+	//std::cout << "\n\n" <<  std::string(buf);
 	return std::string(buf);
 }
